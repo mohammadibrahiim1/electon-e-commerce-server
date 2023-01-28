@@ -1,5 +1,5 @@
 const express = require("express");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
 
 const cors = require("cors");
@@ -20,13 +20,12 @@ app.get("/", (req, res) => {
 // const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri =
   "mongodb+srv://user-admin:QvuYfoPkal4fSmbm@cluster0.wuwpwwx.mongodb.net/?retryWrites=true&w=majority";
-  console.log(uri);
+console.log(uri);
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
-
 
 // client.connect((err) => {
 //   const collection = client.db("test").collection("devices");
@@ -34,30 +33,24 @@ const client = new MongoClient(uri, {
 //   client.close();
 // });
 
-
 async function run() {
-    const productsCollection = client.db("electon-e-commerce").collection("all-products")
+  const productsCollection = client
+    .db("electon-e-commerce")
+    .collection("all-products");
 
-    try{
+  try {
+    // get all products
 
-        // get all products
-
-        app.get( "/allproducts" , async(req, res)=> {
-            const query = {};
-            const cursor = productsCollection.find(query);
-            const allproducts = await cursor.toArray();
-            res.send(allproducts);
-        })
-
-    }
-    finally{
-
-    }
+    app.get("/allproducts", async (req, res) => {
+      const query = {};
+      const cursor = productsCollection.find(query);
+      const allproducts = await cursor.toArray();
+      res.send(allproducts);
+    });
+  } finally {
+  }
 }
-run().catch((error)=> console.log(error));
-
-
-
+run().catch((error) => console.log(error));
 
 app.listen(port, () => console.log(`server is running on port ${port}`));
 
