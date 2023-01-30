@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 
 // data-base connection
 
-// const { MongoClient, ServerApiVersion } = require("mongodb");
+
 const uri =
   "mongodb+srv://user-admin:QvuYfoPkal4fSmbm@cluster0.wuwpwwx.mongodb.net/?retryWrites=true&w=majority";
 console.log(uri);
@@ -26,12 +26,6 @@ const client = new MongoClient(uri, {
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
-
-// client.connect((err) => {
-//   const collection = client.db("test").collection("devices");
-//   // perform actions on the collection object
-//   client.close();
-// });
 
 async function run() {
   const productsCollection = client
@@ -46,6 +40,13 @@ async function run() {
       const cursor = productsCollection.find(query);
       const allproducts = await cursor.toArray();
       res.send(allproducts);
+    });
+
+    app.get("/productdetails/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const selectedProducts = await productsCollection.findOne(query);
+      res.send(selectedProducts);
     });
   } finally {
   }
