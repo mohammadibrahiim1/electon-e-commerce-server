@@ -33,7 +33,7 @@ async function run() {
     .collection("all-products");
 
   try {
-    // get all products
+    
 
     app.get("/allproducts", async (req, res) => {
       const query = {};
